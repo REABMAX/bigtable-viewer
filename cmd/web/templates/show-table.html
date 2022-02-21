@@ -36,7 +36,7 @@
 
             <nav aria-label="Page navigation">
                 <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="/tables/{{ .TableName }}?start={{ .LastRowKey }}&limit={{ .Limit }}">Next</a></li>
+                    <li class="page-item"><a class="page-link" href="/tables/{{ .TableName }}?start={{ .LastRowKey }}&limit={{ .Limit }}&search={{ .Search }}">Next</a></li>
                 </ul>
             </nav>
 
@@ -58,9 +58,7 @@
                     <td>{{ $row.ID }}</td>
                     {{ range $_, $familyInfo := $families }}
                     {{ $rowsFamily := index $row.Families $familyInfo.Name }}
-                    {{ if eq $rowsFamily nil }}
-                    <td>-</td>
-                    {{ else }}
+                    {{ if $rowsFamily }}
                     <td>
                         <table class="table table-light mb-0">
                             <thead>
@@ -78,7 +76,7 @@
                                     <details>
                                         <summary>{{ $cell.Time.Time.Format "02.01.2006 15:04:05 UTC" }}</summary>
                                         {{ if $cell.IsJSON }}
-                                            <pre style="max-width: 50%" class="prettyprint">{{ $cell.PrettyPrintJSON }}</pre>
+                                        <pre style="max-width: 50%" class="prettyprint">{{ $cell.PrettyPrintJSON }}</pre>
                                         {{ else }}
                                         {{ $cell.Value }}
                                         {{ end }}
@@ -90,6 +88,8 @@
                             </tbody>
                         </table>
                     </td>
+                    {{ else }}
+                    <td>-</td>
                     {{ end }}
                     {{ end }}
                 </tr>
@@ -99,7 +99,7 @@
 
             <nav aria-label="Page navigation">
                 <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="/tables/{{ .TableName }}?start={{ .LastRowKey }}&limit={{ .Limit }}">Next</a></li>
+                    <li class="page-item"><a class="page-link" href="/tables/{{ .TableName }}?start={{ .LastRowKey }}&limit={{ .Limit }}&search={{ .Search }}">Next</a></li>
                 </ul>
             </nav>
         </main>

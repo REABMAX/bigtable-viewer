@@ -32,11 +32,11 @@ func showTable(client *db.Client, tpl *template.Template, w http.ResponseWriter,
 	}
 
 	queryParams := r.URL.Query()
-	start := getStringParam(queryParams,"start", "")
-	search := getStringParam(queryParams,"search", "")
+	start := getStringParam(queryParams, "start", "")
+	search := getStringParam(queryParams, "search", "")
 	limit := getIntParam(queryParams, "limit", 10)
 
-	rows, err := client.FetchRows(tableName, start, limit)
+	rows, err := client.FetchRows(tableName, start, limit, search)
 	if err != nil {
 		err500(err)
 		return
@@ -54,19 +54,19 @@ func showTable(client *db.Client, tpl *template.Template, w http.ResponseWriter,
 	}
 
 	err = printTemplate(w, tpl, "show-table.html", struct {
-		TableName string
-		Families []bigtable.FamilyInfo
-		Rows     []db.Row
+		TableName  string
+		Families   []bigtable.FamilyInfo
+		Rows       []db.Row
 		LastRowKey string
-		Limit int
-		Search string
+		Limit      int
+		Search     string
 	}{
-		TableName: tableName,
-		Families: structure,
-		Rows:     rows,
+		TableName:  tableName,
+		Families:   structure,
+		Rows:       rows,
 		LastRowKey: lastRowKey,
-		Limit: limit,
-		Search: search,
+		Limit:      limit,
+		Search:     search,
 	})
 	if err != nil {
 		err500(err)
