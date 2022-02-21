@@ -21,7 +21,7 @@ jobs:
         with:
           go-version: '~1.17.0'
       - name: Build
-        run: go build -o build/bigtable-viewer${{ matrix.os == 'windows' && '.exe' || '' }} ./cmd/web/main.go
+        run: go build -o build/bigtable-viewer-${{matrix.os}}${{ matrix.os == 'windows' && '.exe' || '' }} ./cmd/web/main.go
         env:
           GOOS: ${{ matrix.os }}
       - name: Upload artifacts to release
