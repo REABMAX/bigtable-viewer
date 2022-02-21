@@ -7,31 +7,29 @@ import (
 	"strings"
 )
 
+// TODO refactor
 func All() (string, string, []error) {
-	var errors []error
+	var errs []error
 
-	project, err := Get("project")
-	if err != nil {
-		errors = append(errors, err)
+	project := *flag.String("project", "", "the gcp project id")
+	instance := *flag.String("instance", "", "the bigtable instance name")
+	flag.Parse()
+
+	if project == "" {
+		if e, ok := os.LookupEnv(strings.ToUpper("project")); ok {
+			project = e
+		} else {
+			errs = append(errs, errors.New("could not find flag or env var project"))
+		}
 	}
 
-	instance, err := Get("instance")
-	if err != nil {
-		errors = append(errors, err)
+	if instance == "" {
+		if e, ok := os.LookupEnv(strings.ToUpper("instance")); ok {
+			instance = e
+		} else {
+			errs = append(errs, errors.New("could not find flag or env var project"))
+		}
 	}
 
-	return project, instance, errors
-}
-
-func Get(name string) (string, error) {
-	s := *flag.String(name, "", "the gcp project id")
-	if s != "" {
-		return s, nil
-	}
-
-	if e, ok := os.LookupEnv(strings.ToUpper(name)); ok {
-		return e, nil
-	}
-
-	return "", errors.New("no project id found. Either set it by cli flag -project or by env var PROJECT")
+	return project, instance, errs
 }
