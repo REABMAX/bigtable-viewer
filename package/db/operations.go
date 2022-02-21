@@ -55,28 +55,28 @@ func mapRow(orig bigtable.Row) Row {
 	for familyName, cells := range orig {
 		columns := make(map[string]*Column)
 		for _, cell := range cells {
-			if _,ok := columns[cell.Column]; !ok {
-				columnName := strings.TrimPrefix(cell.Column, familyName + ":")
+			if _, ok := columns[cell.Column]; !ok {
+				columnName := strings.TrimPrefix(cell.Column, familyName+":")
 				columns[cell.Column] = &Column{
-					Name: columnName,
+					Name:  columnName,
 					Cells: []*Cell{},
 				}
 			}
 
 			columns[cell.Column].Cells = append(columns[cell.Column].Cells, &Cell{
 				Value: string(cell.Value),
-				Time: cell.Timestamp,
+				Time:  cell.Timestamp,
 			})
 		}
 
-		families[familyName] =&Family{
-			Name: familyName,
+		families[familyName] = &Family{
+			Name:    familyName,
 			Columns: columns,
 		}
 	}
 
 	return Row{
-		ID: id,
+		ID:       id,
 		Families: families,
 	}
 }
