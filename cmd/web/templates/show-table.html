@@ -37,6 +37,7 @@
             <nav aria-label="Page navigation">
                 <ul class="pagination">
                     <li class="page-item"><a class="page-link" href="/tables/{{ .TableName }}?start={{ .LastRowKey }}&limit={{ .Limit }}&search={{ .Search }}">Next</a></li>
+                    <li class="page-item"><a class="page-link" href="/tables/{{ .TableName }}" title="Refresh {{ .TableName }}">Refresh</a></li>
                 </ul>
             </nav>
 
